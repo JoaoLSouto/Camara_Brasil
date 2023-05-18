@@ -1,22 +1,9 @@
-import { useNavigate  } from "react-router-dom";
-import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
-
-import { Container, Title, TitleHighlight, TextContent} from './styles';
-
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const Home = () => {
-
-    const navigate = useNavigate();
-
-    const handleClickSignIn = () => {
-        navigate('/feed')
-    }
-
 
     return (<>
         <Header />
