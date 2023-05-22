@@ -18,8 +18,11 @@ const PartidosCard = () => {
     <div>
       {partidos.map((partido) => (
         <div key={partido.id}>
-          <img src={partido.urlLogo} alt={partido.sigla} />
-          <div>{partido.sigla} - {partido.nome}</div>
+          <img src={partido.urlLogo?.trim()} alt="Logo do Partido" />
+          <div>
+            {partido.sigla} - {partido.nome}
+            Total de Membros: {partido.totalMembros}
+          </div>
         </div>
       ))}
     </div>

@@ -30,6 +30,12 @@ const Header = ({autenticado}) => {
                   <li class="nav-item">
                     <a class="nav-link" href="/noticias">Notícias</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/videos">Videos</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/estatisticas">Estatisticas</a>
+                  </li>
                 </ul>
               </div>
             </div>

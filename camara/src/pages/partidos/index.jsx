@@ -27,4 +27,4 @@ const Partidos = () => {
   );
 };
 
-export { Partidos };
+export { Partidos};

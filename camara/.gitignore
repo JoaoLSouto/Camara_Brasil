@@ -8,3 +8,4 @@ env/
 /.DS_Store
 /.cache/
 /.tmp/
+public/video.mp4
