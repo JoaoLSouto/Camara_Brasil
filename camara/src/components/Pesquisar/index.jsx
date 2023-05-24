@@ -39,7 +39,7 @@ const Pesquisar = () => {
     };
 
     sortDeputados();
-  }, [sortOrder]);
+  });
 
   useEffect(() => {
     setFilteredDeputados([...deputados]);
@@ -97,7 +97,6 @@ const Pesquisar = () => {
         {filteredDeputados.slice(0, quantidadeDeputados).map((deputado) => (
           <div className="col-md-3" key={deputado.id}>
             <div className="deputado-card hover-effect">
-              <h3>{deputado.nome}</h3>
               <img
                 key={deputado.id}
                 src={deputado.urlFoto}
@@ -105,7 +104,8 @@ const Pesquisar = () => {
                 className="img-fluid"
                 style={{ maxWidth: '120px' }}
                 onClick={() => handleDeputadoClick(deputado)}
-              />
+                />
+                <h3>{deputado.nome}</h3>
             </div>
           </div>
         ))}

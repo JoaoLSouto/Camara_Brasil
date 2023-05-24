@@ -10,7 +10,7 @@ import { Deputados } from "./pages/deputados"
 import { Partidos } from "./pages/partidos"
 import { Noticias } from "./pages/noticias";
 import { Estatisticas } from "./pages/estatisticas";
-import { Videos } from "./pages/videos";
+import { VideosP } from "./pages/videosP";
 function App() {
   
   return (
@@ -22,7 +22,7 @@ function App() {
         <Route path="/partidos" element={<Partidos/>} />  
         <Route path="/noticias" element={<Noticias/>} />
         <Route path="/estatisticas" element={<Estatisticas/>} />        
-        <Route path="/videos" element={<Videos/>} />        
+        <Route path="/videos" element={<VideosP/>} />        
 
 
       </Routes>

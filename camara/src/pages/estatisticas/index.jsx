@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
+
 import { Header } from '../../components/Header';
-import { Pie } from "react-chartjs-2";
 
 const Estatisticas = () => {
 

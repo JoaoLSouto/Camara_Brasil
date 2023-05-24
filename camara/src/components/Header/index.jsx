@@ -1,12 +1,5 @@
 import React from 'react'
 import congresso from  '../../assets/congresso.png'
-import { Link } from 'react-router-dom';
-
-import {
-    Container,
-    Row,
-    nav
-} from './styles'
 
 const Header = ({autenticado}) => {
   return (
