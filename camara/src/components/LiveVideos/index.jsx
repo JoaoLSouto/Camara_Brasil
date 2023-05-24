@@ -5,6 +5,8 @@ import { Carousel as ResponsiveCarousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import ReactPlayer from "react-player";
 
+import "./videoslive.css"
+
 const LiveVideos = () => {
   const [videos, setVideos] = useState([]);
 
@@ -40,18 +42,16 @@ const LiveVideos = () => {
         <ResponsiveCarousel
             showThumbs={false}
             showStatus={false}
-            infiniteLoop={true}
-            autoPlay={true}
-            interval={3000}>
+            infiniteLoop={false}
+            autoPlay={false}
+            interval={3000}
+            className="carousel-root">
           {videos.map((video) => (
             <div key={video.id.videoId}>
+              <Card.Title>{video.snippet.title}</Card.Title>
               <Card>
-               <Card.Body>
-                  <Card.Title>{video.snippet.title}</Card.Title>
-               </Card.Body>
+             <ReactPlayer url={`https://www.youtube.com/watch?v=${video.id.videoId}`} controls={true} className="video-player" />
              </Card>
-                <ReactPlayer url={`https://www.youtube.com/watch?v=${video.id.videoId}`} controls={true}               
-                 />
             </div>
           ))}
         </ResponsiveCarousel>

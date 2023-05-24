@@ -35,25 +35,23 @@ const Videos = () => {
     <div>
       <Container>
         <h2>Voz do Brasil</h2>
-        <ResponsiveCarousel
-        >
+        <ResponsiveCarousel className="carousel-root2">
           {videos.map((video) => (
-           <div key={video.id}>
-           <div >
-             <Card>
-               <Card.Body>
-                 <Card.Title>{video.snippet.title}</Card.Title>
-               </Card.Body>
-             </Card>
-             <ReactPlayer
-               url={`https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`}
-             />
-           </div>
-         </div>
-       ))}
-     </ResponsiveCarousel>
-   </Container>
- </div>
+            <div key={video.id}>
+              <div>
+                <Card.Title>{video.snippet.title}</Card.Title>
+                <Card>
+                  <ReactPlayer
+                    url={`https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`}
+                    className="video-player2"
+                  />
+                </Card>
+              </div>
+            </div>
+          ))}
+        </ResponsiveCarousel>
+      </Container>
+    </div>
   );
 };
 
