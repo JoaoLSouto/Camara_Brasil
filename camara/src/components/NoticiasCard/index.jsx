@@ -40,7 +40,12 @@ function NoticiasCard() {
         <Card.Img variant="top" src={article.urlToImage || 'https://via.placeholder.com/150'} />
         <Card.Body>
           <Card.Title>{article.title}</Card.Title>
-          <Button href={article.url} target="_blank" variant="primary">Ler mais</Button>
+          <Button href={article.url} target="_blank" variant="primary"                     
+          style={{
+                  backgroundColor: 'green',
+                  display: 'block',
+                  margin: '10px auto',
+                }}>Ler mais</Button>
         </Card.Body>
         <Card.Footer>
           <small className="text-muted">{new Date(article.publishedAt).toLocaleString('pt-BR')}</small>
@@ -51,7 +56,13 @@ function NoticiasCard() {
 </Row>
 
       {news.length > 6 && !showMore && (
-        <button onClick={handleShowMore}>Mostrar Mais</button>
+        <button onClick={handleShowMore}
+        style={{
+          backgroundColor: 'green',
+          display: 'block',
+          margin: '0 auto',
+        }}>Mostrar Mais
+        </button>
       )}
     </div>
   );

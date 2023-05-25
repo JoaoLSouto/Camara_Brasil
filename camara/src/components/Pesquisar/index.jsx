@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Row, Form, FormControl, Button, Dropdown, Modal } from 'react-bootstrap';
+import { Row, Form, FormControl, Button, Dropdown } from 'react-bootstrap';
+import { ModalD } from '../ModalD';
+import Filtro from '../Filtro';
 import './index.css';
 
 const Pesquisar = () => {
   const [query, setQuery] = useState('');
   const [deputados, setDeputados] = useState([]);
+  const [filteredDeputados, setFilteredDeputados] = useState([]);
   const [quantidadeDeputados, setQuantidadeDeputados] = useState(20);
   const [sortOrder, setSortOrder] = useState('asc');
-  const [filteredDeputados, setFilteredDeputados] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedDeputado, setSelectedDeputado] = useState(null);
   const [despesas, setDespesas] = useState([]);
   const [despesasVisiveis, setDespesasVisiveis] = useState(5);
+  const [selectedGender, setSelectedGender] = useState('');
+  const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedState, setSelectedState] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,28 +30,39 @@ const Pesquisar = () => {
   }, [query]);
 
   useEffect(() => {
-    const sortDeputados = () => {
-      const sortedDeputados = [...filteredDeputados].sort((a, b) => {
-        const nameA = a.nome.toUpperCase();
-        const nameB = b.nome.toUpperCase();
-        if (sortOrder === 'asc') {
-          return nameA.localeCompare(nameB);
-        } else {
-          return nameB.localeCompare(nameA);
+    const applyFilters = () => {
+      const filtered = deputados.filter((deputado) => {
+        if (selectedGender && deputado.genero !== selectedGender) {
+          return false;
         }
+        if (selectedStatus && deputado.status !== selectedStatus) {
+          return false;
+        }
+        if (selectedState && deputado.siglaUf !== selectedState) {
+          return false;
+        }
+        return true;
       });
-      setFilteredDeputados(sortedDeputados);
+      setFilteredDeputados(filtered);
     };
 
-    sortDeputados();
-  });
-
-  useEffect(() => {
-    setFilteredDeputados([...deputados]);
-  }, [deputados]);
+    applyFilters();
+  }, [deputados, selectedGender, selectedStatus, selectedState]);
 
   const handleInputChange = (event) => {
     setQuery(event.target.value);
+  };
+
+  const handleGenderChange = (event) => {
+    setSelectedGender(event.target.value);
+  };
+
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
+
+  const handleStateChange = (event) => {
+    setSelectedState(event.target.value);
   };
 
   const handleShowMoreClick = () => {
@@ -93,22 +109,48 @@ const Pesquisar = () => {
           </Dropdown.Menu>
         </Dropdown>
       </Form>
+      <Filtro
+        selectedGender={selectedGender}
+        selectedStatus={selectedStatus}
+        selectedState={selectedState}
+        setSelectedGender={setSelectedGender}
+        setSelectedStatus={setSelectedStatus}
+        setSelectedState={setSelectedState}
+      />
       <Row className="text-center">
-        {filteredDeputados.slice(0, quantidadeDeputados).map((deputado) => (
-          <div className="col-md-3" key={deputado.id}>
-            <div className="deputado-card hover-effect">
-              <img
-                key={deputado.id}
-                src={deputado.urlFoto}
-                alt={deputado.nome}
-                className="img-fluid"
-                style={{ maxWidth: '120px' }}
-                onClick={() => handleDeputadoClick(deputado)}
+        {(selectedGender === '' && selectedStatus === '' && selectedState === '') ? (
+          deputados.map((deputado) => (
+            <div className="col-md-3" key={deputado.id}>
+              <div className="deputado-card hover-effect">
+                <img
+                  key={deputado.id}
+                  src={deputado.urlFoto}
+                  alt={deputado.nome}
+                  className="img-fluid"
+                  style={{ maxWidth: '120px' }}
+                  onClick={() => handleDeputadoClick(deputado)}
                 />
                 <h3>{deputado.nome}</h3>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          filteredDeputados.map((deputado) => (
+            <div className="col-md-3" key={deputado.id}>
+              <div className="deputado-card hover-effect">
+                <img
+                  key={deputado.id}
+                  src={deputado.urlFoto}
+                  alt={deputado.nome}
+                  className="img-fluid"
+                  style={{ maxWidth: '120px' }}
+                  onClick={() => handleDeputadoClick(deputado)}
+                />
+                <h3>{deputado.nome}</h3>
+              </div>
+            </div>
+          ))
+        )}
       </Row>
       {filteredDeputados.length > quantidadeDeputados && (
         <Button
@@ -122,86 +164,14 @@ const Pesquisar = () => {
           Mostrar Mais
         </Button>
       )}
-
-      <Modal
-        show={showModal}
-        onHide={() => {
-          setShowModal(false);
-          setDespesas([]);
-          setDespesasVisiveis(5);
-        }}
-        dialogClassName="modal-content"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>{selectedDeputado && selectedDeputado.nome}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <div className="modal-dialog-scrollable">
-          {selectedDeputado && (
-            <div className="d-flex align-items-center justify-content-center flex-column">
-              <img
-                key={selectedDeputado.id}
-                src={selectedDeputado.urlFoto}
-                alt={selectedDeputado.nome}
-                className="img-fluid mx-auto"
-                style={{ maxWidth: '120px' }}
-              />
-              <div className="ml-4 text-center">
-                <h4>Informações adicionais:</h4>
-                <p>
-                  Partido:{' '}
-                  {selectedDeputado.siglaPartido
-                    ? selectedDeputado.siglaPartido
-                    : 'Não fornecido pela API'}
-                </p>
-                <p>
-                  Email:{' '}
-                  {selectedDeputado.email
-                    ? selectedDeputado.email
-                    : 'Não fornecido pela API'}
-                </p>
-                <p>
-                  Estado:{' '}
-                  {selectedDeputado.siglaUf
-                    ? selectedDeputado.siglaUf
-                    : 'Não fornecido pela API'}
-                </p>
-                <p>
-                  Escolaridade:{' '}
-                  {selectedDeputado.escolaridade
-                    ? selectedDeputado.escolaridade
-                    : 'Não fornecido pela API'}
-                </p>
-                <h4>Despesas:</h4>
-                {despesas.length > 0 ? (
-                  <ul>
-                    {despesas.slice(0, despesasVisiveis).map((despesa) => (
-                      <li key={despesa.id}>
-                        {despesa.tipoDespesa} - Valor: R$ {despesa.valorLiquido}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>Não há despesas registradas para este deputado.</p>
-                )}
-                {despesas.length > despesasVisiveis && (
-                  <Button
-                    onClick={handleShowMoreDespesas}
-                    style={{
-                      backgroundColor: 'green',
-                      display: 'block',
-                      margin: '10px auto',
-                    }}
-                  >
-                    Ver mais despesas
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-      </Modal.Body>
-      </Modal>
+      <ModalD
+        showModal={showModal}
+        setShowModal={setShowModal}
+        selectedDeputado={selectedDeputado}
+        despesas={despesas}
+        despesasVisiveis={despesasVisiveis}
+        handleShowMoreDespesas={handleShowMoreDespesas}
+      />
     </div>
   );
 };
