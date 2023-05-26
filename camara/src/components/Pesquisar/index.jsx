@@ -94,28 +94,34 @@ const Pesquisar = () => {
         Pesquise um deputado ou veja a lista em ordem alfabética:
       </Form.Label>
       <Form className="d-flex align-items-center">
-        <FormControl type="text" value={query} onChange={handleInputChange} />
-        <Dropdown style={{ marginLeft: '10px' }}>
-          <Dropdown.Toggle variant="secondary" id="sortDropdown">
-            Classificar por
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => handleSortOrderClick('asc')}>
-              Ordem Crescente
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => handleSortOrderClick('desc')}>
-              Ordem Decrescente
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+      <FormControl
+  type="text"
+  value={query}
+  onChange={handleInputChange}
+/>
+
+<Dropdown>
+  <Dropdown.Toggle variant="secondary" id="sortDropdown">
+    Classificar por
+  </Dropdown.Toggle>
+  <Dropdown.Menu>
+    <Dropdown.Item onClick={() => handleSortOrderClick('asc')}>
+      Ordem Crescente
+    </Dropdown.Item>
+    <Dropdown.Item onClick={() => handleSortOrderClick('desc')}>
+      Ordem Decrescente
+    </Dropdown.Item>
+  </Dropdown.Menu>
+</Dropdown>
+
       </Form>
       <Filtro
         selectedGender={selectedGender}
         selectedStatus={selectedStatus}
         selectedState={selectedState}
-        setSelectedGender={setSelectedGender}
-        setSelectedStatus={setSelectedStatus}
-        setSelectedState={setSelectedState}
+        handleGenderChange={handleGenderChange}
+        handleStatusChange={handleStatusChange}
+        handleStateChange={handleStateChange}
       />
       <Row className="text-center">
         {(selectedGender === '' && selectedStatus === '' && selectedState === '') ? (
