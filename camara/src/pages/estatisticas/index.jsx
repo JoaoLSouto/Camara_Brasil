@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Header } from '../../components/Header';
 import { format } from 'date-fns';
-import { Card, ListGroup } from 'react-bootstrap';
+import { Card, ListGroup, Accordion } from 'react-bootstrap';
+import './index.css';
 
 const Estatisticas = () => {
   const [eventos, setEventos] = useState([]);
@@ -11,7 +12,10 @@ const Estatisticas = () => {
       try {
         const response = await fetch('https://dadosabertos.camara.leg.br/api/v2/eventos');
         const data = await response.json();
-        setEventos(data.dados);
+        const eventosOrdenados = data.dados.sort((a, b) => {
+          return new Date(b.dataHoraInicio) - new Date(a.dataHoraInicio);
+        });
+        setEventos(eventosOrdenados);
       } catch (error) {
         console.log(error);
       }
@@ -27,32 +31,43 @@ const Estatisticas = () => {
   return (
     <div>
       <Header />
-      <h2>Ùltimos eventos:</h2>
-      {eventos.map((evento) => (
-        <Card key={evento.id} className="mb-4">
-          <Card.Body>
-          <Card.Title>{evento.orgaos[0]?.apelido}</Card.Title>
-          </Card.Body>
-          <ListGroup className="list-group-flush">
-            <Card.Text>Data e Hora: {formatarDataHora(evento.dataHoraInicio)} - {formatarDataHora(evento.dataHoraFim)}</Card.Text>
-          </ListGroup> 
-          <ListGroup className="list-group-flush">
-            <Card.Text>Situação: {evento.situacao}</Card.Text>
-          </ListGroup>
-          <ListGroup className="list-group-flush">
-            <Card.Text>{evento.descricaoTipo}</Card.Text>
-          </ListGroup>
-          <ListGroup className="list-group-flush">
-            <Card.Text>Descrição: {evento.descricao}</Card.Text>
-            </ListGroup>
-          <ListGroup className="list-group-flush">
-            <ListGroup.Item>Local da Câmara: {evento.localCamara?.nome}</ListGroup.Item>
-          </ListGroup>
-          <Card.Body>
-            <Card.Link href={evento.urlRegistro}>Ver este evento.</Card.Link>
-          </Card.Body>
-        </Card>
-      ))}
+      <h2>Últimos eventos:</h2>
+      <Accordion flush>
+        {eventos.map((evento) => (
+          <Card key={evento.id} className="mb-0">
+            <Accordion.Item eventKey={evento.id}>
+              <Accordion.Header>
+                {formatarDataHora(evento.dataHoraInicio)} - {evento.orgaos[0]?.apelido}
+              </Accordion.Header>
+              <Accordion.Body>
+                <Card.Body>
+                <ListGroup className="list-group-flush">
+                  <Card.Text>
+                    <p>
+                      <a href={evento.urlRegistro} target="_blank" rel="noopener noreferrer">
+                        Assistir esse evento
+                      </a>
+                    </p>
+                  </Card.Text>
+                </ListGroup>
+                  <ListGroup className="list-group-flush">
+                    <Card.Text>Situação: {evento.situacao}</Card.Text>
+                  </ListGroup>
+                  <ListGroup className="list-group-flush">
+                    <Card.Text>{evento.descricaoTipo}</Card.Text>
+                  </ListGroup>
+                  <ListGroup className="list-group-flush">
+                    <Card.Text>Descrição: <p>{evento.descricao}</p></Card.Text>
+                  </ListGroup>
+                  <ListGroup className="list-group-flush">
+                    <Card.Text>Local da Câmara: {evento.localCamara?.nome}</Card.Text>
+                  </ListGroup>
+                </Card.Body>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Card>
+        ))}
+      </Accordion>
     </div>
   );
 };
