@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Header } from "../../components/Header";
 
-const Proposta = () => {
+const Fdetalhes= () => {
+
   return (
     <div>
       <Header />
@@ -9,4 +10,4 @@ const Proposta = () => {
   );
 };
 
-export { Proposta };
+export { Fdetalhes };

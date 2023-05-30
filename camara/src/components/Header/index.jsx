@@ -18,7 +18,7 @@ const Header = ({autenticado}) => {
                   <a class="nav-link active" aria-current="page" href="/deputados">Deputados</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/propostas">Propostas Legislativas</a>
+                    <a class="nav-link" href="/frentes">Frentes Parlamentares</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="/estatisticas">Eventos</a>
