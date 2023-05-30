@@ -11,6 +11,7 @@ import { RedeSocial } from "./pages/redesocial"
 import { Noticias } from "./pages/noticias";
 import { Estatisticas } from "./pages/estatisticas";
 import { VideosP } from "./pages/videosP";
+import { Proposta } from "./pages/propostas";
 function App() {
   
   return (
@@ -23,7 +24,7 @@ function App() {
         <Route path="/noticias" element={<Noticias/>} />
         <Route path="/estatisticas" element={<Estatisticas/>} />        
         <Route path="/videos" element={<VideosP/>} />        
-
+        <Route path="/propostas" element={<Proposta/>} />
 
       </Routes>
     </Router>
