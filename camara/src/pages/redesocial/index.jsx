@@ -6,6 +6,7 @@ const RedeSocial = () => {
   return (
     <div>
       <Header />
+      <h2>Tweets da Câmara dos Deputados</h2>
       <Timeline
         dataSource={{
           sourceType: "profile",
@@ -13,8 +14,8 @@ const RedeSocial = () => {
         }}
         options={{
           height: "1000",
-          width: "1500",
-          
+          width: "500",
+          theme: "dark"
         }}
       />
     </div>
