@@ -23,6 +23,7 @@ const Frentes = () => {
   }, []);
 
   useEffect(() => {
+    // Filtrar as frentes com base no termo de pesquisa
     const frentesFiltradas = frentes.filter((frente) =>
       frente.titulo.toLowerCase().includes(termoPesquisa.toLowerCase())
     );
