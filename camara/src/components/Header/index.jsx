@@ -18,16 +18,16 @@ const Header = ({autenticado}) => {
                   <a class="nav-link active" aria-current="page" href="/deputados">Deputados</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/redesocial">Rede Social</a>
+                    <a class="nav-link" href="/videos">Ao vivo da Câmara</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/eventos">Eventos</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="/noticias">Notícias</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="/videos">Videos</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/estatisticas">Estatisticas</a>
+                    <a class="nav-link" href="/redesocial">Rede Social</a>
                   </li>
                 </ul>
               </div>

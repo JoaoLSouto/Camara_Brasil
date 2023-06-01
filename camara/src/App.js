@@ -9,7 +9,7 @@ import { Feed } from "./pages/feed";
 import { Deputados } from "./pages/deputados"
 import { RedeSocial } from "./pages/redesocial"
 import { Noticias } from "./pages/noticias";
-import { Estatisticas } from "./pages/estatisticas";
+import { Eventos } from "./pages/estatisticas";
 import { VideosP } from "./pages/videosP";
 function App() {
   
@@ -21,7 +21,7 @@ function App() {
         <Route path="/deputados" element={<Deputados/>} />       
         <Route path="/redesocial" element={<RedeSocial/>} />  
         <Route path="/noticias" element={<Noticias/>} />
-        <Route path="/estatisticas" element={<Estatisticas/>} />        
+        <Route path="/eventos" element={<Eventos/>} />        
         <Route path="/videos" element={<VideosP/>} />        
 
 
