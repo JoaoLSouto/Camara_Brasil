@@ -29,6 +29,9 @@ const Header = ({autenticado}) => {
                   <li class="nav-item">
                     <a class="nav-link" href="/redesocial">Rede Social</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/faleconosco">Fale Conosco</a>
+                  </li>
                 </ul>
               </div>
             </div>
