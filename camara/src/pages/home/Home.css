@@ -1,0 +1,26 @@
+.video-background {
+    position: relative;
+  }
+  
+  .buttons-container {
+    position: absolute;
+    top: 20px; /* Ajuste a distância do topo conforme necessário */
+    left: 20px; /* Ajuste a distância da direita conforme necessário */
+    transform: translate(50%, -50%);
+  }
+  
+  .button {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    opacity: 0.5; /* Defina a opacidade desejada */
+    transition: opacity 0.3s ease; /* Adicione a transição de animação */
+    margin-top: 10px; /* Adicione uma margem superior para separar os botões */
+  }
+  
+  .button:hover {
+    opacity: 1; /* Aumenta a opacidade ao passar o mouse */
+  }
+  

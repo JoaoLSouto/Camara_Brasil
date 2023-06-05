@@ -1,0 +1,18 @@
+.navbar-nav {
+    display: flex;
+    justify-content: left;
+  }
+  
+  .nav-link {
+    padding: 0;
+  }
+  
+  .nav-link .svg-inline--fa {
+    width: 24px; /* Ajuste o valor conforme necessário */
+    height: auto;
+  }
+  
+  .navbar-collapse {
+    justify-content: left;
+  }
+  
