@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Header } from '../../components/Header';
 import { format } from 'date-fns';
 import { Card, ListGroup, Accordion } from 'react-bootstrap';
+import { Subheader } from '../../components/Subheader';
 import './index.css';
 
 const Eventos = () => {
@@ -30,6 +31,7 @@ const Eventos = () => {
 
   return (
     <div>
+      <Subheader/>
       <Header />
       <h2>Últimos eventos:</h2>
       <Accordion flush>

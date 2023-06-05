@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Header } from "../../components/Header";
-
+import { Subheader } from '../../components/Subheader';
 const Frentes = () => {
   const [frentes, setFrentes] = useState([]);
   const [termoPesquisa, setTermoPesquisa] = useState("");
@@ -36,6 +36,7 @@ const Frentes = () => {
 
   return (
     <div>
+      <Subheader />
       <Header />
       <div>
         <input

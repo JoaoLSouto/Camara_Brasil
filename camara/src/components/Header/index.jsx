@@ -1,8 +1,8 @@
 import React from 'react'
 import congresso from  '../../assets/congresso.png'
-
 const Header = ({autenticado}) => {
   return (
+    
           <nav class="navbar navbar-expand-lg bg-body-tertiary bg-success fs-5 fw-bold">
             <div class="container-fluid">
               <img src={congresso} alt="Logo" />
@@ -28,9 +28,6 @@ const Header = ({autenticado}) => {
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="/redesocial">Rede Social</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/faleconosco">Fale Conosco</a>
                   </li>
                 </ul>
               </div>
