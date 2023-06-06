@@ -3,7 +3,7 @@ import { Header } from '../../components/Header';
 import { Container } from 'react-bootstrap';
 import { Pesquisar } from '../../components/Pesquisar';
 import { Subheader } from '../../components/Subheader';
-
+import { Bottom } from '../../components/Bottom';
 function Deputados() {
   return (
       <>
@@ -14,7 +14,7 @@ function Deputados() {
       <Pesquisar />
         </div>
       </Container>
-        
+      <Bottom />
       </>
   );
 }
