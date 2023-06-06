@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { Card, ListGroup, Accordion } from 'react-bootstrap';
 import { Subheader } from '../../components/Subheader';
 import './index.css';
-
+import { Bottom } from '../../components/Bottom';
 const Eventos = () => {
   const [eventos, setEventos] = useState([]);
 
@@ -70,6 +70,7 @@ const Eventos = () => {
           </Card>
         ))}
       </Accordion>
+      <Bottom />
     </div>
   );
 };

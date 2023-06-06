@@ -4,7 +4,7 @@ import { Container } from 'react-bootstrap';
 import React from 'react';
 import { NoticiasCard } from '../../components/NoticiasCard';
 import { Subheader } from '../../components/Subheader';
-
+import { Bottom } from '../../components/Bottom';
 const Noticias = () => {
     return (
         <>
@@ -15,6 +15,7 @@ const Noticias = () => {
             <NoticiasCard />
           </div>
         </Container >
+        <Bottom />
         </>
     );
 }

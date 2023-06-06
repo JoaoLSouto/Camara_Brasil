@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Header } from "../../components/Header";
 import { Subheader } from '../../components/Subheader';
+import { Bottom } from '../../components/Bottom';
 const Frentes = () => {
   const [frentes, setFrentes] = useState([]);
   const [termoPesquisa, setTermoPesquisa] = useState("");
@@ -51,6 +52,7 @@ const Frentes = () => {
           <li key={frente.id}>{frente.titulo}</li>
         ))}
       </ul>
+      <Bottom />
     </div>
   );
 };

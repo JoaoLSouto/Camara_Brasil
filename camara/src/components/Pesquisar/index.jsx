@@ -13,7 +13,7 @@ const Pesquisar = () => {
   const [deputados, setDeputados] = useState([]);
   const [filteredDeputados, setFilteredDeputados] = useState([]);
   const [quantidadeDeputados, setQuantidadeDeputados] = useState(20);
-  const [selectedGender, setSelectedGender] = useState('');
+  const [selectedGender, setSelectedGender] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [selectedParty, setSelectedParty] = useState('');
@@ -53,33 +53,17 @@ const Pesquisar = () => {
     setDespesasVisiveis(despesasVisiveis + 5);
   };
 
-  const handleFilter = () => {
-    const filtered = deputados.filter((deputado) => {
-      if (selectedGender && deputado.genero !== selectedGender) {
-        return false;
-      }
-      if (selectedStatus && deputado.status !== selectedStatus) {
-        return false;
-      }
-      if (selectedState && deputado.siglaUf !== selectedState) {
-        return false;
-      }
-    if (selectedParty && deputado.siglaPartido !== selectedParty) {
-      return false;
+  const handleGenderChange = (event) => {
+    const { id, checked } = event.target;
+  
+    if (id === 'masculino-checkbox' && checked) {
+      setSelectedGender('M');
+    } else if (id === 'feminino-checkbox' && checked) {
+      setSelectedGender('F');
+    } else {
+      setSelectedGender('');
     }
-    return true;
-  });
-
-  setFilteredDeputados(filtered);
-  setQuantidadeDeputados(20);
-  return;
-};
-
-
-const handleGenderChange = (event) => {
-  setSelectedGender(event.target.value);
-  return;
-};
+  };
 
 const handleStatusChange = (event) => {
   setSelectedStatus(event.target.value);
@@ -96,30 +80,30 @@ const handlePartyChange = (event) => {
   return;
 };
 
+const filterDeputados = () => {
+  const filtered = deputados.filter((deputado) => {
+    if (selectedGender && deputado.sexo !== selectedGender.toUpperCase()) {
+      return false;
+    }
+    if (selectedStatus && deputado.situacao !== selectedStatus) {
+      return false;
+    }
+    if (selectedState && deputado.siglaUf !== selectedState) {
+      return false;
+    }
+    if (selectedParty && deputado.siglaPartido !== selectedParty) {
+      return false;
+    }
+    return true;
+  });
+
+  setFilteredDeputados(filtered);
+  setQuantidadeDeputados(20);
+  setDeputadosEncontrados(filtered.length);
+};
+
 useEffect(() => {
-  const applyFilters = () => {
-    const filtered = deputados.filter((deputado) => {
-      if (selectedGender && deputado.genero !== selectedGender) {
-        return false;
-      }
-      if (selectedStatus && deputado.status !== selectedStatus) {
-        return false;
-      }
-      if (selectedState && deputado.siglaUf !== selectedState) {
-        return false;
-      }
-      if (selectedParty && deputado.siglaPartido !== selectedParty) {
-        return false;
-      }
-      return true;
-    });
-
-    setFilteredDeputados(filtered);
-    setQuantidadeDeputados(20);
-    setDeputadosEncontrados(filtered.length); // Atualiza a contagem dos deputados encontrados
-  };
-
-  applyFilters();
+  filterDeputados();
 }, [deputados, selectedGender, selectedStatus, selectedState, selectedParty]);
 
   return (
@@ -128,11 +112,11 @@ useEffect(() => {
         Pesquise um deputado ou veja a lista em ordem alfabética:
       </Form.Label>
       <Form className="d-flex align-items-center">
-      <FormControl
-        type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+        <FormControl
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
       </Form>
       <p>{deputadosEncontrados} deputados encontrados</p>
       <Dropdown>
@@ -144,20 +128,20 @@ useEffect(() => {
           <Form.Group>
             <Form.Label>Gênero:</Form.Label>
             <ButtonGroup>
-              <Form.Check
-                type="checkbox"
-                id="masculino-checkbox"
-                label="Masculino"
-                checked={selectedGender === 'M'}
-                onChange={handleGenderChange}
-              />
-              <Form.Check
-                type="checkbox"
-                id="feminino-checkbox"
-                label="Feminino"
-                checked={selectedGender === 'F'}
-                onChange={handleGenderChange}
-              />
+            <Form.Check
+              type="checkbox"
+              id="masculino-checkbox"
+              label="Masculino"
+              checked={selectedGender === 'M'}
+              onChange={handleGenderChange}
+            />
+            <Form.Check
+              type="checkbox"
+              id="feminino-checkbox"
+              label="Feminino"
+              checked={selectedGender === 'F'}
+              onChange={handleGenderChange}
+            />
             </ButtonGroup>
           </Form.Group>
         </Dropdown.ItemText>
@@ -172,7 +156,8 @@ useEffect(() => {
               <option value="">Todos</option>
               <option value="Exercicio">Em Exercício</option>
               <option value="Licenca">Em Licença</option>
-              <option value="Afastado">Afastado</option>
+              <option value="expirado">Mandato Expirado</option>
+              <option value="Suplencia">Suplência</option>
             </Form.Control>
           </Form.Group>
         </Dropdown.ItemText>
@@ -271,7 +256,7 @@ useEffect(() => {
           </Form.Group>
         </Dropdown.ItemText>
         <Dropdown.ItemText>
-          <Button variant="primary" onClick={handleFilter}>
+          <Button variant="primary" onClick={filterDeputados}>
             Filtrar
           </Button>
         </Dropdown.ItemText>

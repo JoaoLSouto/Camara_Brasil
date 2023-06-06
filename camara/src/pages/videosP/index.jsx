@@ -5,6 +5,7 @@ import { Videos } from "../../components/Videos"
 import { LiveVideos } from "../../components/LiveVideos"
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Subheader } from '../../components/Subheader';
+import { Bottom } from '../../components/Bottom';
 
 const VideosP = () => {
 
@@ -16,6 +17,7 @@ const VideosP = () => {
       <LiveVideos />
       <Videos />
       </Container>
+      <Bottom />
     </div>
   );
 };
