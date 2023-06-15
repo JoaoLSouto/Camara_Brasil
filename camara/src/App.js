@@ -9,7 +9,8 @@ import { Feed } from "./pages/feed";
 import { Deputados } from "./pages/deputados"
 import { RedeSocial } from "./pages/redesocial"
 import { Noticias } from "./pages/noticias";
-import { Eventos } from "./pages/estatisticas";
+import Estatisticas from "./pages/estatisticas";
+import { Eventos } from "./pages/eventos";
 import { VideosP } from "./pages/videosP";
 import { Faleconosco } from "./pages/faleconosco";
 function App() {
@@ -19,7 +20,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home/>} />
         <Route path="/feed" element={<Feed/>} />
-        <Route path="/deputados" element={<Deputados/>} />       
+        <Route path="/deputados" element={<Deputados/>} />
+        <Route path="/estatisticas" element={<Estatisticas/>} />       
         <Route path="/redesocial" element={<RedeSocial/>} />  
         <Route path="/noticias" element={<Noticias/>} />
         <Route path="/eventos" element={<Eventos/>} />        

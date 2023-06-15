@@ -1,78 +1,67 @@
 import React, { useEffect, useState } from "react";
 import { Header } from '../../components/Header';
-import { format } from 'date-fns';
-import { Card, ListGroup, Accordion } from 'react-bootstrap';
 import { Subheader } from '../../components/Subheader';
 import './index.css';
 import { Bottom } from '../../components/Bottom';
-const Eventos = () => {
-  const [eventos, setEventos] = useState([]);
+import axios from "axios";
+import { BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { Tooltip } from "react-bootstrap";
+import { Legend } from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+const Estatisticas = () => {
+
+  const [partidos, setPartidos] = useState({});
 
   useEffect(() => {
-    const fetchEventos = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch('https://dadosabertos.camara.leg.br/api/v2/eventos');
-        const data = await response.json();
-        const eventosOrdenados = data.dados.sort((a, b) => {
-          return new Date(b.dataHoraInicio) - new Date(a.dataHoraInicio);
-        });
-        setEventos(eventosOrdenados);
+        const response = await axios.get(
+          `https://dadosabertos.camara.leg.br/api/v2/deputados`
+        );
+
+        const obj = {}
+        response.data.dados.map((item) => {
+          const qtd = item.siglaPartido in obj ? obj[item.siglaPartido] + 1 : 1
+          obj[item.siglaPartido] = qtd
+        })
+        console.log(obj);
+
+        setPartidos(obj)
       } catch (error) {
-        console.log(error);
+        console.error('Erro ao buscar deputados:', error);
       }
     };
 
-    fetchEventos();
+    fetchData();
   }, []);
 
-  const formatarDataHora = (dataHora) => {
-    return format(new Date(dataHora), "dd/MM/yyyy HH:mm");
-  };
+  const data = [
+    {name: 'Page A', pv: 2400, amt: 2400},
+    {name: 'Page B', pv: 1398, amt: 2210},
+    {name: 'Page C', pv: 9800, amt: 2290},
+    {name: 'Page D', pv: 3908, amt: 2000},
+    {name: 'Page E', pv: 4800, amt: 2181},
+    {name: 'Page F', pv: 3800, amt: 2500},
+    {name: 'Page G', pv: 4300, amt: 2100},
+  ];
+
 
   return (
     <div>
-      <Subheader/>
+      <Subheader />
       <Header />
-      <h2>Últimos eventos:</h2>
-      <Accordion flush>
-        {eventos.map((evento) => (
-          <Card key={evento.id} className="mb-0">
-            <Accordion.Item eventKey={evento.id}>
-              <Accordion.Header>
-                {formatarDataHora(evento.dataHoraInicio)} - {evento.orgaos[0]?.apelido}
-              </Accordion.Header>
-              <Accordion.Body>
-                <Card.Body>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>
-                      <p>
-                        <a href={evento.urlRegistro} target="_blank" rel="noopener noreferrer">
-                          Assistir esse evento
-                        </a>
-                      </p>
-                    </Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>Situação: {evento.situacao}</Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>{evento.descricaoTipo}</Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>Descrição: <p>{evento.descricao}</p></Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>Local da Câmara: {evento.localCamara?.nome}</Card.Text>
-                  </ListGroup>
-                </Card.Body>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Card>
-        ))}
-      </Accordion>
+      <BarChart width={730} height={250} data={data}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis  dataKey="pv"/>
+        <Bar dataKey="pv" fill="#aaaaaa" />
+        <Tooltip />
+        <Legend />
+      </BarChart>
       <Bottom />
     </div>
   );
 };
 
-export { Eventos };
+export default Estatisticas;
