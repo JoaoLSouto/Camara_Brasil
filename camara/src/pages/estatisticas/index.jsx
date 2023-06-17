@@ -8,7 +8,7 @@ import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from "rec
 
 const Estatisticas = () => {
 
-  const [partidos, setPartidos] = useState({});
+  const [partidos, setPartidos] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,8 +24,9 @@ const Estatisticas = () => {
         })
 
         const arrDeObj = Object.entries(obj).map(([chave, valor]) => ({ 'partido': chave, 'valor': valor }));
+        const partidosOrdenados = arrDeObj.sort((a, b) => b.valor - a.valor);
 
-        setPartidos(arrDeObj)
+        setPartidos(partidosOrdenados);
       } catch (error) {
         console.error('Erro ao buscar deputados:', error);
       }
@@ -38,6 +39,7 @@ const Estatisticas = () => {
     <div>
       <Subheader />
       <Header />
+      <h2>Quantidade de deputados por partido:</h2>
       <BarChart width={1250} height={500} data={partidos}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="partido" />
