@@ -19,6 +19,7 @@ const Pesquisar = () => {
   const [selectedParty, setSelectedParty] = useState('');
   const [deputadosEncontrados, setDeputadosEncontrados] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
+  
   useEffect(() => {
     const fetchData = async () => {
       try {

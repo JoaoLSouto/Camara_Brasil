@@ -1,78 +1,54 @@
 import React, { useEffect, useState } from "react";
 import { Header } from '../../components/Header';
-import { format } from 'date-fns';
-import { Card, ListGroup, Accordion } from 'react-bootstrap';
 import { Subheader } from '../../components/Subheader';
 import './index.css';
 import { Bottom } from '../../components/Bottom';
-const Eventos = () => {
-  const [eventos, setEventos] = useState([]);
+import axios from "axios";
+import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from "recharts";
+
+const Estatisticas = () => {
+
+  const [partidos, setPartidos] = useState({});
 
   useEffect(() => {
-    const fetchEventos = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch('https://dadosabertos.camara.leg.br/api/v2/eventos');
-        const data = await response.json();
-        const eventosOrdenados = data.dados.sort((a, b) => {
-          return new Date(b.dataHoraInicio) - new Date(a.dataHoraInicio);
-        });
-        setEventos(eventosOrdenados);
+        const response = await axios.get(
+          `https://dadosabertos.camara.leg.br/api/v2/deputados`
+        );
+
+        const obj = {}
+        response.data.dados.map((item) => {
+          const qtd = item.siglaPartido in obj ? obj[item.siglaPartido] + 1 : 1
+          obj[item.siglaPartido] = qtd
+        })
+
+        const arrDeObj = Object.entries(obj).map(([chave, valor]) => ({ 'partido': chave, 'valor': valor }));
+
+        setPartidos(arrDeObj)
       } catch (error) {
-        console.log(error);
+        console.error('Erro ao buscar deputados:', error);
       }
     };
 
-    fetchEventos();
+    fetchData();
   }, []);
-
-  const formatarDataHora = (dataHora) => {
-    return format(new Date(dataHora), "dd/MM/yyyy HH:mm");
-  };
 
   return (
     <div>
-      <Subheader/>
+      <Subheader />
       <Header />
-      <h2>Últimos eventos:</h2>
-      <Accordion flush>
-        {eventos.map((evento) => (
-          <Card key={evento.id} className="mb-0">
-            <Accordion.Item eventKey={evento.id}>
-              <Accordion.Header>
-                {formatarDataHora(evento.dataHoraInicio)} - {evento.orgaos[0]?.apelido}
-              </Accordion.Header>
-              <Accordion.Body>
-                <Card.Body>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>
-                      <p>
-                        <a href={evento.urlRegistro} target="_blank" rel="noopener noreferrer">
-                          Assistir esse evento
-                        </a>
-                      </p>
-                    </Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>Situação: {evento.situacao}</Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>{evento.descricaoTipo}</Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>Descrição: <p>{evento.descricao}</p></Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>Local da Câmara: {evento.localCamara?.nome}</Card.Text>
-                  </ListGroup>
-                </Card.Body>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Card>
-        ))}
-      </Accordion>
+      <BarChart width={1250} height={500} data={partidos}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="partido" />
+        <YAxis />
+        <Bar dataKey="valor" fill="#8884d8" />
+        <Tooltip />
+        <Legend />
+      </BarChart>
       <Bottom />
     </div>
   );
 };
 
-export { Eventos };
+export default Estatisticas;

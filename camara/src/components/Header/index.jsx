@@ -18,6 +18,9 @@ const Header = ({autenticado}) => {
                   <a class="nav-link active" aria-current="page" href="/deputados">Deputados</a>
                   </li>
                   <li class="nav-item">
+                    <a class="nav-link" href="/estatisticas">Estatísticas</a>
+                  </li>
+                  <li class="nav-item">
                     <a class="nav-link" href="/videos">Ao vivo da Câmara</a>
                   </li>
                   <li class="nav-item">
