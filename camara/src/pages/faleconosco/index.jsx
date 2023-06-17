@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header } from "../../components/Header";
 import { Subheader } from "../../components/Subheader";
 import { Bottom } from "../../components/Bottom";
 import emailjs from "emailjs-com";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Alert } from "react-bootstrap";
 
 const Faleconosco = () => {
   const userID = "cbca-MchY2yjUctY2";
   const templateID = "template_9r78aye";
   const serviceID = "service_xd712o1";
+
+  const [showNotification, setShowNotification] = useState(false);
 
   function sendEmail(e) {
     e.preventDefault();
@@ -17,6 +19,7 @@ const Faleconosco = () => {
       .then(
         (result) => {
           console.log(result.text);
+          setShowNotification(true);
         },
         (error) => {
           console.log(error.text);
@@ -90,6 +93,17 @@ const Faleconosco = () => {
         </Row>
       </Container>
 
+      {showNotification && (
+        <Container className="mt-3">
+          <Row className="justify-content-center">
+            <Col md={6}>
+              <Alert variant="success" onClose={() => setShowNotification(false)} dismissible>
+                O e-mail foi enviado com sucesso!
+              </Alert>
+            </Col>
+          </Row>
+        </Container>
+      )}
       <Bottom />
     </div>
   );

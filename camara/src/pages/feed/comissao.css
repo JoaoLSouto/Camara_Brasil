@@ -1,0 +1,83 @@
+body{
+    background-color: rgba(55, 70, 70, 0.973);
+    background-image: url(camaralegislativadodistritofederal284.jpeg);
+    padding: auto;
+    margin: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .select-container {
+    margin-bottom: 20px;
+    color: rgb(0, 0, 0);
+  }
+  select{
+    background-color: green;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    background-color: #708372;
+    border-radius: 4px;
+    
+    padding: 15px;
+    margin-bottom: 20px;
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  body{
+    background-color: rgba(55, 70, 70, 0.973);
+    background-image: url(camaralegislativadodistritofederal284.jpeg);
+    padding: auto;
+    margin: 0;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .select-container {
+    margin-bottom: 20px;
+    color: rgb(0, 0, 0);
+  }
+  select{
+    background-color: green;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    background-color: #708372;
+    border-radius: 4px;
+    
+    padding: 15px;
+    margin-bottom: 20px;
+    
+  }
