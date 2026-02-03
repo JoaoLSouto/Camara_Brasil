@@ -1,199 +1,146 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useTheme } from '../../contexts/ThemeContext';
 import { Header } from "../../components/Header";
 import { Subheader } from '../../components/Subheader';
 import { Bottom } from '../../components/Bottom';
+import { FaTwitter, FaInstagram, FaExternalLinkAlt } from 'react-icons/fa';
+import { Tabs, Tab, Card, Button } from 'react-bootstrap';
+import { TwitterFeed } from '../../components/TwitterFeed';
 
 const RedeSocial = () => {
-  const [useNitter, setUseNitter] = useState(false);
-
-  useEffect(() => {
-    if (!useNitter) {
-      // Limpa scripts antigos
-      const oldScripts = document.querySelectorAll('script[src*="platform.twitter.com"]');
-      oldScripts.forEach(s => s.remove());
-
-      // Carrega o script do Twitter/X
-      const script = document.createElement('script');
-      script.src = 'https://platform.twitter.com/widgets.js';
-      script.async = true;
-      script.charset = 'utf-8';
-
-      script.onload = () => {
-        console.log('Script do Twitter carregado');
-        if (window.twttr && window.twttr.widgets) {
-          window.twttr.widgets.load();
-        }
-      };
-
-      script.onerror = () => {
-        console.error('Erro ao carregar script do Twitter');
-      };
-
-      document.body.appendChild(script);
-
-      return () => {
-        if (document.body.contains(script)) {
-          document.body.removeChild(script);
-        }
-      };
-    }
-  }, [useNitter]);
-
-  if (useNitter) {
-    return (
-      <div>
-        <Subheader />
-        <Header />
-        <div style={{
-          maxWidth: '800px',
-          margin: '30px auto',
-          padding: '20px'
-        }}>
-          <h2 style={{
-            textAlign: 'center',
-            marginBottom: '20px',
-            color: '#14171a',
-            fontSize: '24px',
-            fontWeight: 'bold'
-          }}>
-            Feed da Câmara dos Deputados
-          </h2>
-
-          <div style={{
-            padding: '15px',
-            backgroundColor: '#e3f2fd',
-            borderRadius: '8px',
-            marginBottom: '20px',
-            textAlign: 'center'
-          }}>
-            <p style={{ margin: '0 0 10px 0', color: '#1976d2' }}>
-              Visualizando através do Nitter (alternativa ao X/Twitter)
-            </p>
-            <button
-              onClick={() => setUseNitter(false)}
-              style={{
-                padding: '8px 16px',
-                backgroundColor: '#1d9bf0',
-                color: '#fff',
-                border: 'none',
-                borderRadius: '20px',
-                cursor: 'pointer',
-                fontSize: '14px'
-              }}
-            >
-              Tentar X/Twitter novamente
-            </button>
-          </div>
-
-          <iframe
-            src="https://nitter.poast.org/camaradeputados"
-            style={{
-              width: '100%',
-              height: '800px',
-              border: '1px solid #e1e8ed',
-              borderRadius: '12px',
-              backgroundColor: '#fff'
-            }}
-            title="Feed Câmara dos Deputados via Nitter"
-          />
-        </div>
-        <Bottom />
-      </div>
-    );
-  }
+  const { colors } = useTheme();
+  const [activeTab, setActiveTab] = useState('instagram');
 
   return (
-    <div>
+    <div style={{ backgroundColor: colors.backgroundAlt, minHeight: '100vh' }}>
       <Subheader />
       <Header />
       <div style={{
-        maxWidth: '650px',
-        margin: '30px auto',
-        padding: '20px'
+        maxWidth: '1200px',
+        margin: '0 auto',
+        padding: '40px 20px'
       }}>
-        <h2 style={{
-          textAlign: 'center',
-          marginBottom: '30px',
-          color: '#14171a',
-          fontSize: '24px',
-          fontWeight: 'bold'
-        }}>
-          Feed da Câmara dos Deputados
-        </h2>
-
         <div style={{
-          padding: '20px',
-          backgroundColor: '#fff3cd',
-          borderRadius: '8px',
-          marginBottom: '20px',
-          border: '1px solid #ffc107'
+          background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)',
+          padding: '40px',
+          marginBottom: '40px',
+          borderRadius: '16px',
+          color: 'white',
+          boxShadow: '0 4px 20px rgba(40,167,69,0.3)'
         }}>
-          <p style={{ margin: '0 0 10px 0', color: '#856404', fontWeight: 'bold' }}>
-            ⚠️ Erro 429 - Muitas Requisições
+          <h1 style={{
+            fontSize: '32px',
+            fontWeight: '700',
+            marginBottom: '10px'
+          }}>
+            Redes Sociais da Câmara
+          </h1>
+          <p style={{ fontSize: '16px', opacity: 0.9, margin: 0 }}>
+            Acompanhe as atualizações oficiais nas redes sociais
           </p>
-          <p style={{ margin: '0 0 15px 0', color: '#856404', fontSize: '14px' }}>
-            O Twitter está bloqueando temporariamente as requisições.
-            Aguarde 15-30 minutos ou use a alternativa abaixo.
-          </p>
-          <button
-            onClick={() => setUseNitter(true)}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#1d9bf0',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '20px',
-              cursor: 'pointer',
-              fontSize: '15px',
-              fontWeight: 'bold'
-            }}
-          >
-            Ver via Nitter (Alternativa)
-          </button>
         </div>
 
-        <div style={{
-          backgroundColor: '#fff',
-          borderRadius: '12px',
-          padding: '10px',
-          minHeight: '500px'
+        {/* Conteúdo com Abas */}
+        <Card style={{
+          border: 'none',
+          boxShadow: `0 2px 12px ${colors.shadow}`,
+          borderRadius: '16px',
+          backgroundColor: colors.card,
+          overflow: 'hidden'
         }}>
-          <a
-            className="twitter-timeline"
-            data-height="800"
-            data-width="100%"
-            data-theme="light"
-            data-chrome="noheader noborders"
-            data-tweet-limit="20"
-            data-dnt="false"
-            href="https://twitter.com/camaradeputados?ref_src=twsrc%5Etfw"
-          >
-            Posts de @camaradeputados
-          </a>
-        </div>
+          <Card.Body style={{ padding: '20px' }}>
+            <Tabs
+              activeKey={activeTab}
+              onSelect={(k) => setActiveTab(k)}
+              className="mb-3"
+              style={{ borderBottom: `2px solid ${colors.border}` }}
+            >
+              <Tab eventKey="instagram" title={
+                <span style={{ display: 'flex', alignItems: 'center', gap: '8px', color: colors.text }}>
+                  <FaInstagram /> Instagram
+                </span>
+              }>
+                <div style={{ padding: '15px 0' }}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '20px',
+                    flexWrap: 'wrap',
+                    gap: '10px'
+                  }}>
+                    <h5 style={{ color: colors.text, margin: 0, fontWeight: '600' }}>
+                      Feed @camaradosdeputados
+                    </h5>
+                    <Button
+                      href="https://www.instagram.com/camaradosdeputados/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      size="sm"
+                      style={{
+                        background: 'linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)',
+                        border: 'none',
+                        borderRadius: '20px',
+                        padding: '8px 16px',
+                        fontWeight: '600',
+                        fontSize: '13px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <FaExternalLinkAlt size={11} /> Ver Perfil
+                    </Button>
+                  </div>
 
-        <div style={{
-          textAlign: 'center',
-          marginTop: '20px'
-        }}>
-          <a
-            href="https://twitter.com/camaradeputados"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'inline-block',
-              padding: '10px 20px',
-              backgroundColor: '#1d9bf0',
-              color: '#fff',
-              textDecoration: 'none',
-              borderRadius: '20px',
-              fontSize: '15px',
-              fontWeight: 'bold'
-            }}
-          >
-            Abrir no X/Twitter →
-          </a>
-        </div>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    minHeight: '800px'
+                  }}>
+                    <iframe
+                      src="https://www.instagram.com/camaradosdeputados/embed/"
+                      title="Feed do Instagram da Câmara dos Deputados"
+                      width="100%"
+                      height="900"
+                      frameBorder="0"
+                      scrolling="yes"
+                      allowTransparency="true"
+                      style={{
+                        border: 'none',
+                        borderRadius: '12px',
+                        backgroundColor: colors.background,
+                        maxWidth: '540px'
+                      }}
+                    />
+                  </div>
+
+                  <div style={{
+                    marginTop: '20px',
+                    padding: '15px',
+                    backgroundColor: colors.backgroundAlt,
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    color: colors.textSecondary,
+                    textAlign: 'center'
+                  }}>
+                    <strong>💡 Dica:</strong> Clique no botão "Ver Perfil" acima para ver todas as publicações no Instagram.
+                  </div>
+                </div>
+              </Tab>
+
+              <Tab eventKey="twitter" title={
+                <span style={{ display: 'flex', alignItems: 'center', gap: '8px', color: colors.text }}>
+                  <FaTwitter /> Feed do Twitter
+                </span>
+              }>
+                <div style={{ padding: '15px 0' }}>
+                  <TwitterFeed />
+                </div>
+              </Tab>
+            </Tabs>
+          </Card.Body>
+        </Card>
       </div>
       <Bottom />
     </div>
