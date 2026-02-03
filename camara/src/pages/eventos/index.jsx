@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Header } from '../../components/Header';
 import { format } from 'date-fns';
-import { Card, ListGroup, Accordion } from 'react-bootstrap';
+import { Card, Container, Badge, Spinner, Row, Col, Button } from 'react-bootstrap';
 import { Subheader } from '../../components/Subheader';
 import './index.css';
 import { Bottom } from '../../components/Bottom';
+
 const Eventos = () => {
   const [eventos, setEventos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filtroSituacao, setFiltroSituacao] = useState('Todos');
 
   useEffect(() => {
     const fetchEventos = async () => {
+      setLoading(true);
       try {
-        const response = await fetch('https://dadosabertos.camara.leg.br/api/v2/eventos');
+        const response = await fetch('https://dadosabertos.camara.leg.br/api/v2/eventos?itens=50');
         const data = await response.json();
         const eventosOrdenados = data.dados.sort((a, b) => {
           return new Date(b.dataHoraInicio) - new Date(a.dataHoraInicio);
@@ -20,56 +24,277 @@ const Eventos = () => {
       } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     };
 
     fetchEventos();
   }, []);
 
   const formatarDataHora = (dataHora) => {
-    return format(new Date(dataHora), "dd/MM/yyyy HH:mm");
+    return format(new Date(dataHora), "dd/MM/yyyy 'às' HH:mm");
   };
 
+  const getBadgeColor = (situacao) => {
+    switch (situacao?.toLowerCase()) {
+      case 'encerrada':
+      case 'encerrado':
+        return 'secondary';
+      case 'em andamento':
+        return 'success';
+      case 'prevista':
+        return 'warning';
+      case 'cancelada':
+      case 'cancelado':
+        return 'danger';
+      default:
+        return 'info';
+    }
+  };
+
+  const eventosFiltrados = filtroSituacao === 'Todos'
+    ? eventos
+    : eventos.filter(e => e.situacao === filtroSituacao);
+
+  const situacoesDisponiveis = ['Todos', ...new Set(eventos.map(e => e.situacao))];
+
   return (
-    <div>
-      <Subheader/>
+    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+      <Subheader />
       <Header />
-      <h2>Últimos eventos:</h2>
-      <Accordion flush>
-        {eventos.map((evento) => (
-          <Card key={evento.id} className="mb-0">
-            <Accordion.Item eventKey={evento.id}>
-              <Accordion.Header>
-                {formatarDataHora(evento.dataHoraInicio)} - {evento.orgaos[0]?.apelido}
-              </Accordion.Header>
-              <Accordion.Body>
-                <Card.Body>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>
-                      <p>
-                        <a href={evento.urlRegistro} target="_blank" rel="noopener noreferrer">
-                          Assistir esse evento
-                        </a>
-                      </p>
-                    </Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>Situação: {evento.situacao}</Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>{evento.descricaoTipo}</Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>Descrição: <p>{evento.descricao}</p></Card.Text>
-                  </ListGroup>
-                  <ListGroup className="list-group-flush">
-                    <Card.Text>Local da Câmara: {evento.localCamara?.nome}</Card.Text>
-                  </ListGroup>
-                </Card.Body>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Card>
-        ))}
-      </Accordion>
+
+      <Container style={{ padding: '40px 0' }}>
+        <div style={{
+          background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)',
+          padding: '40px',
+          marginBottom: '40px',
+          borderRadius: '16px',
+          color: 'white',
+          boxShadow: '0 4px 20px rgba(40,167,69,0.2)'
+        }}>
+          <h1 style={{ fontSize: '32px', fontWeight: '700', marginBottom: '10px' }}>
+            📅 Eventos da Câmara
+          </h1>
+          <p style={{ fontSize: '16px', opacity: 0.9, margin: 0 }}>
+            Acompanhe as reuniões, sessões e audiências públicas
+          </p>
+        </div>
+
+        {/* Filtros */}
+        <Card style={{
+          marginBottom: '30px',
+          border: 'none',
+          boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+          borderRadius: '16px'
+        }}>
+          <Card.Body style={{ padding: '25px' }}>
+            <h5 style={{ marginBottom: '15px', color: '#1a1a1a', fontWeight: '600' }}>
+              🔍 Filtrar por Situação
+            </h5>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+              {situacoesDisponiveis.map((situacao) => (
+                <Badge
+                  key={situacao}
+                  bg={filtroSituacao === situacao ? 'success' : 'light'}
+                  text={filtroSituacao === situacao ? 'white' : 'dark'}
+                  style={{
+                    padding: '8px 16px',
+                    fontSize: '14px',
+                    cursor: 'pointer',
+                    border: filtroSituacao === situacao ? 'none' : '2px solid #e0e0e0',
+                    fontWeight: filtroSituacao === situacao ? '600' : '500',
+                    transition: 'all 0.3s'
+                  }}
+                  onClick={() => setFiltroSituacao(situacao)}
+                >
+                  {situacao} {situacao === 'Todos' && `(${eventos.length})`}
+                </Badge>
+              ))}
+            </div>
+          </Card.Body>
+        </Card>
+
+        {loading ? (
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '400px',
+            backgroundColor: 'white',
+            borderRadius: '16px',
+            padding: '60px'
+          }}>
+            <Spinner animation="border" style={{ width: '4rem', height: '4rem', color: '#28a745' }} />
+            <p style={{ marginTop: '20px', fontSize: '18px', color: '#666' }}>
+              Carregando eventos...
+            </p>
+          </div>
+        ) : (
+          <>
+            <div style={{ marginBottom: '20px', color: '#666' }}>
+              <strong>{eventosFiltrados.length}</strong> {eventosFiltrados.length === 1 ? 'evento encontrado' : 'eventos encontrados'}
+            </div>
+
+            {eventosFiltrados.length === 0 ? (
+              <Card style={{
+                border: 'none',
+                borderRadius: '16px',
+                padding: '60px',
+                textAlign: 'center',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.08)'
+              }}>
+                <div style={{ fontSize: '64px', marginBottom: '20px' }}>📭</div>
+                <h4 style={{ color: '#666', marginBottom: '10px' }}>Nenhum evento encontrado</h4>
+                <p style={{ color: '#999' }}>
+                  Tente ajustar os filtros ou volte mais tarde
+                </p>
+              </Card>
+            ) : (
+              <Row>
+                {eventosFiltrados.map((evento) => (
+                  <Col key={evento.id} xs={12} md={6} lg={4} style={{ marginBottom: '25px' }}>
+                    <Card
+                      className="evento-card"
+                      style={{
+                        border: 'none',
+                        borderRadius: '16px',
+                        height: '100%',
+                        boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-8px)';
+                        e.currentTarget.style.boxShadow = '0 12px 28px rgba(40,167,69,0.2)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.08)';
+                      }}
+                    >
+                      <Card.Body style={{ padding: '25px' }}>
+                        {/* Header com data e situação */}
+                        <div style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'flex-start',
+                          marginBottom: '15px'
+                        }}>
+                          <div style={{ flex: 1 }}>
+                            <div style={{
+                              fontSize: '13px',
+                              color: '#28a745',
+                              fontWeight: '600',
+                              marginBottom: '5px'
+                            }}>
+                              📅 {formatarDataHora(evento.dataHoraInicio)}
+                            </div>
+                          </div>
+                          <Badge bg={getBadgeColor(evento.situacao)} style={{ fontSize: '11px' }}>
+                            {evento.situacao}
+                          </Badge>
+                        </div>
+
+                        {/* Tipo do evento */}
+                        <h5 style={{
+                          fontSize: '16px',
+                          fontWeight: '700',
+                          marginBottom: '15px',
+                          color: '#1a1a1a',
+                          lineHeight: '1.4'
+                        }}>
+                          {evento.descricaoTipo}
+                        </h5>
+
+                        {/* Descrição */}
+                        {evento.descricao && (
+                          <p style={{
+                            fontSize: '14px',
+                            color: '#666',
+                            marginBottom: '15px',
+                            lineHeight: '1.6',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 3,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden'
+                          }}>
+                            {evento.descricao}
+                          </p>
+                        )}
+
+                        {/* Órgão */}
+                        {evento.orgaos && evento.orgaos.length > 0 && (
+                          <div style={{
+                            backgroundColor: '#f8f9fa',
+                            padding: '12px',
+                            borderRadius: '8px',
+                            marginBottom: '12px'
+                          }}>
+                            <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>
+                              🏛️ Órgão
+                            </div>
+                            <div style={{ fontSize: '14px', fontWeight: '600', color: '#1a1a1a' }}>
+                              {evento.orgaos[0].apelido}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Local */}
+                        {evento.localCamara?.nome && (
+                          <div style={{
+                            backgroundColor: '#f8f9fa',
+                            padding: '12px',
+                            borderRadius: '8px',
+                            marginBottom: '15px'
+                          }}>
+                            <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>
+                              📍 Local
+                            </div>
+                            <div style={{ fontSize: '14px', fontWeight: '600', color: '#1a1a1a' }}>
+                              {evento.localCamara.nome}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Botão para assistir */}
+                        {evento.urlRegistro && (
+                          <a
+                            href={evento.urlRegistro}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: 'none' }}
+                          >
+                            <Button
+                              style={{
+                                width: '100%',
+                                backgroundColor: '#28a745',
+                                border: 'none',
+                                borderRadius: '8px',
+                                padding: '10px',
+                                fontWeight: '600',
+                                fontSize: '14px',
+                                transition: 'all 0.3s'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = '#218838';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = '#28a745';
+                              }}
+                            >
+                              🎥 Assistir Evento
+                            </Button>
+                          </a>
+                        )}
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            )}
+          </>
+        )}
+      </Container>
       <Bottom />
     </div>
   );
