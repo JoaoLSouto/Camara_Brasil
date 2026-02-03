@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useTheme } from '../../contexts/ThemeContext';
 import { Header } from '../../components/Header';
 import { Subheader } from '../../components/Subheader';
 import { Bottom } from '../../components/Bottom';
@@ -8,10 +9,12 @@ import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { FaLandmark, FaCalendarAlt, FaVideo, FaNewspaper, FaInfoCircle } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Home.css';
 
 const Home = () => {
+  const { colors } = useTheme();
   const [eventos, setEventos] = useState([]);
   const [noticias, setNoticias] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -107,7 +110,7 @@ const Home = () => {
       <Subheader />
       <Header />
 
-      <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+      <div style={{ backgroundColor: colors.backgroundAlt, minHeight: '100vh' }}>
         {/* Hero Section */}
         <div style={{
           background: 'linear-gradient(135deg, #28a745 0%, #20c997 100%)',
@@ -118,8 +121,8 @@ const Home = () => {
           <Container>
             <Row className="align-items-center">
               <Col lg={8}>
-                <h1 style={{ fontSize: '48px', fontWeight: '700', marginBottom: '20px' }}>
-                  🏛️ Câmara dos Deputados
+                <h1 style={{ fontSize: '48px', fontWeight: '700', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                  <FaLandmark /> Câmara dos Deputados
                 </h1>
                 <p style={{ fontSize: '20px', opacity: 0.9, marginBottom: '30px' }}>
                   Acompanhe em tempo real a atividade legislativa brasileira
@@ -178,8 +181,8 @@ const Home = () => {
               alignItems: 'center',
               marginBottom: '30px'
             }}>
-              <h2 style={{ fontSize: '32px', fontWeight: '700', color: '#1a1a1a', margin: 0 }}>
-                📅 Próximos Eventos
+              <h2 style={{ fontSize: '32px', fontWeight: '700', color: colors.text, margin: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <FaCalendarAlt /> Próximos Eventos
               </h2>
               <Link to="/eventos" style={{ textDecoration: 'none' }}>
                 <Button style={{
@@ -203,10 +206,11 @@ const Home = () => {
                 {eventos.slice(0, 4).map((evento) => (
                   <Col key={evento.id} md={6} lg={3} className="mb-4">
                     <Card style={{
+                      backgroundColor: colors.card,
                       border: 'none',
                       borderRadius: '16px',
                       height: '100%',
-                      boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+                      boxShadow: `0 2px 12px ${colors.shadow}`,
                       transition: 'all 0.3s'
                     }}
                       onMouseEnter={(e) => {
@@ -215,7 +219,7 @@ const Home = () => {
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.08)';
+                        e.currentTarget.style.boxShadow = `0 2px 12px ${colors.shadow}`;
                       }}>
                       <Card.Body style={{ padding: '20px' }}>
                         <div style={{
@@ -230,7 +234,7 @@ const Home = () => {
                           fontSize: '14px',
                           fontWeight: '700',
                           marginBottom: '10px',
-                          color: '#1a1a1a',
+                          color: colors.text,
                           display: '-webkit-box',
                           WebkitLineClamp: 2,
                           WebkitBoxOrient: 'vertical',
@@ -241,7 +245,7 @@ const Home = () => {
                         {evento.orgaos && evento.orgaos.length > 0 && (
                           <p style={{
                             fontSize: '12px',
-                            color: '#666',
+                            color: colors.textSecondary,
                             margin: 0
                           }}>
                             {evento.orgaos[0].apelido}
@@ -260,10 +264,13 @@ const Home = () => {
             <h2 style={{
               fontSize: '32px',
               fontWeight: '700',
-              color: '#1a1a1a',
-              marginBottom: '30px'
+              color: colors.text,
+              marginBottom: '30px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px'
             }}>
-              🎥 Últimos Vídeos
+              <FaVideo /> Últimos Vídeos
             </h2>
             <Row>
               <Col lg={6} className="mb-4">
@@ -283,8 +290,8 @@ const Home = () => {
               alignItems: 'center',
               marginBottom: '30px'
             }}>
-              <h2 style={{ fontSize: '32px', fontWeight: '700', color: '#1a1a1a', margin: 0 }}>
-                📰 Últimas Notícias
+              <h2 style={{ fontSize: '32px', fontWeight: '700', color: colors.text, margin: 0, display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <FaNewspaper /> Últimas Notícias
               </h2>
               <Link to="/noticias" style={{ textDecoration: 'none' }}>
                 <Button style={{
@@ -308,10 +315,11 @@ const Home = () => {
                 {noticias.map((noticia) => (
                   <Col key={noticia.id} md={6} lg={3} className="mb-4">
                     <Card style={{
+                      backgroundColor: colors.card,
                       border: 'none',
                       borderRadius: '16px',
                       height: '100%',
-                      boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+                      boxShadow: `0 2px 12px ${colors.shadow}`,
                       transition: 'all 0.3s',
                       cursor: 'pointer'
                     }}
@@ -321,7 +329,7 @@ const Home = () => {
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.08)';
+                        e.currentTarget.style.boxShadow = `0 2px 12px ${colors.shadow}`;
                       }}
                       onClick={() => window.open(noticia.link, '_blank')}>
                       <Card.Body style={{ padding: '20px' }}>
@@ -336,7 +344,7 @@ const Home = () => {
                         <h5 style={{
                           fontSize: '14px',
                           fontWeight: '700',
-                          color: '#1a1a1a',
+                          color: colors.text,
                           lineHeight: '1.4',
                           display: '-webkit-box',
                           WebkitLineClamp: 3,
@@ -355,21 +363,24 @@ const Home = () => {
 
           {/* Sobre */}
           <Card style={{
+            backgroundColor: colors.card,
             border: 'none',
             borderRadius: '16px',
-            boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-            background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)'
+            boxShadow: `0 2px 12px ${colors.shadow}`
           }}>
             <Card.Body style={{ padding: '40px' }}>
               <h2 style={{
                 fontSize: '32px',
                 fontWeight: '700',
-                color: '#1a1a1a',
-                marginBottom: '20px'
+                color: colors.text,
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
               }}>
-                ℹ️ Sobre este Portal
+                <FaInfoCircle /> Sobre este Portal
               </h2>
-              <p style={{ fontSize: '16px', color: '#666', lineHeight: '1.8', marginBottom: '20px' }}>
+              <p style={{ fontSize: '16px', color: colors.textSecondary, lineHeight: '1.8', marginBottom: '20px' }}>
                 Portal não oficial para acompanhamento da Câmara dos Deputados. Aqui você encontra
                 informações sobre deputados, eventos legislativos, estatísticas, notícias e transmissões
                 ao vivo. Todos os dados são obtidos através da API de Dados Abertos da Câmara.
@@ -386,9 +397,12 @@ const Home = () => {
                     border: 'none',
                     borderRadius: '8px',
                     padding: '10px 20px',
-                    fontWeight: '600'
+                    fontWeight: '600',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
                   }}>
-                    🏛️ Site Oficial
+                    <FaLandmark /> Site Oficial
                   </Button>
                 </a>
                 <a
@@ -402,9 +416,12 @@ const Home = () => {
                     border: 'none',
                     borderRadius: '8px',
                     padding: '10px 20px',
-                    fontWeight: '600'
+                    fontWeight: '600',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
                   }}>
-                    📊 API de Dados Abertos
+                    <FaVideo /> API de Dados Abertos
                   </Button>
                 </a>
               </div>

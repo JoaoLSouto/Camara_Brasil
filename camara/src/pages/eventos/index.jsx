@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useTheme } from '../../contexts/ThemeContext';
 import { Header } from '../../components/Header';
 import { format } from 'date-fns';
 import { Card, Container, Badge, Spinner, Row, Col, Button } from 'react-bootstrap';
 import { Subheader } from '../../components/Subheader';
+import { FaCalendarAlt, FaSearch, FaVideo, FaLandmark, FaMapMarkerAlt } from 'react-icons/fa';
 import './index.css';
 import { Bottom } from '../../components/Bottom';
 
 const Eventos = () => {
+  const { colors } = useTheme();
   const [eventos, setEventos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filtroSituacao, setFiltroSituacao] = useState('Todos');
@@ -58,7 +61,7 @@ const Eventos = () => {
   const situacoesDisponiveis = ['Todos', ...new Set(eventos.map(e => e.situacao))];
 
   return (
-    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: colors.backgroundAlt, minHeight: '100vh' }}>
       <Subheader />
       <Header />
 
@@ -71,8 +74,8 @@ const Eventos = () => {
           color: 'white',
           boxShadow: '0 4px 20px rgba(40,167,69,0.2)'
         }}>
-          <h1 style={{ fontSize: '32px', fontWeight: '700', marginBottom: '10px' }}>
-            📅 Eventos da Câmara
+          <h1 style={{ fontSize: '32px', fontWeight: '700', marginBottom: '10px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <FaCalendarAlt /> Eventos da Câmara
           </h1>
           <p style={{ fontSize: '16px', opacity: 0.9, margin: 0 }}>
             Acompanhe as reuniões, sessões e audiências públicas
@@ -83,12 +86,13 @@ const Eventos = () => {
         <Card style={{
           marginBottom: '30px',
           border: 'none',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-          borderRadius: '16px'
+          boxShadow: `0 2px 12px ${colors.shadow}`,
+          borderRadius: '16px',
+          backgroundColor: colors.card
         }}>
           <Card.Body style={{ padding: '25px' }}>
-            <h5 style={{ marginBottom: '15px', color: '#1a1a1a', fontWeight: '600' }}>
-              🔍 Filtrar por Situação
+            <h5 style={{ marginBottom: '15px', color: colors.text, fontWeight: '600', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <FaSearch /> Filtrar por Situação
             </h5>
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               {situacoesDisponiveis.map((situacao) => (
@@ -120,18 +124,18 @@ const Eventos = () => {
             justifyContent: 'center',
             alignItems: 'center',
             minHeight: '400px',
-            backgroundColor: 'white',
+            backgroundColor: colors.card,
             borderRadius: '16px',
             padding: '60px'
           }}>
             <Spinner animation="border" style={{ width: '4rem', height: '4rem', color: '#28a745' }} />
-            <p style={{ marginTop: '20px', fontSize: '18px', color: '#666' }}>
+            <p style={{ marginTop: '20px', fontSize: '18px', color: colors.textSecondary }}>
               Carregando eventos...
             </p>
           </div>
         ) : (
           <>
-            <div style={{ marginBottom: '20px', color: '#666' }}>
+            <div style={{ marginBottom: '20px', color: colors.textSecondary }}>
               <strong>{eventosFiltrados.length}</strong> {eventosFiltrados.length === 1 ? 'evento encontrado' : 'eventos encontrados'}
             </div>
 
@@ -141,11 +145,12 @@ const Eventos = () => {
                 borderRadius: '16px',
                 padding: '60px',
                 textAlign: 'center',
-                boxShadow: '0 2px 12px rgba(0,0,0,0.08)'
+                boxShadow: `0 2px 12px ${colors.shadow}`,
+                backgroundColor: colors.card
               }}>
                 <div style={{ fontSize: '64px', marginBottom: '20px' }}>📭</div>
-                <h4 style={{ color: '#666', marginBottom: '10px' }}>Nenhum evento encontrado</h4>
-                <p style={{ color: '#999' }}>
+                <h4 style={{ color: colors.textSecondary, marginBottom: '10px' }}>Nenhum evento encontrado</h4>
+                <p style={{ color: colors.textSecondary }}>
                   Tente ajustar os filtros ou volte mais tarde
                 </p>
               </Card>
@@ -159,7 +164,8 @@ const Eventos = () => {
                         border: 'none',
                         borderRadius: '16px',
                         height: '100%',
-                        boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+                        boxShadow: `0 2px 12px ${colors.shadow}`,
+                        backgroundColor: colors.card,
                         transition: 'all 0.3s ease',
                         cursor: 'pointer'
                       }}
@@ -169,7 +175,7 @@ const Eventos = () => {
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = 'translateY(0)';
-                        e.currentTarget.style.boxShadow = '0 2px 12px rgba(0,0,0,0.08)';
+                        e.currentTarget.style.boxShadow = `0 2px 12px ${colors.shadow}`;
                       }}
                     >
                       <Card.Body style={{ padding: '25px' }}>
@@ -185,9 +191,12 @@ const Eventos = () => {
                               fontSize: '13px',
                               color: '#28a745',
                               fontWeight: '600',
-                              marginBottom: '5px'
+                              marginBottom: '5px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '6px'
                             }}>
-                              📅 {formatarDataHora(evento.dataHoraInicio)}
+                              <FaCalendarAlt /> {formatarDataHora(evento.dataHoraInicio)}
                             </div>
                           </div>
                           <Badge bg={getBadgeColor(evento.situacao)} style={{ fontSize: '11px' }}>
@@ -200,7 +209,7 @@ const Eventos = () => {
                           fontSize: '16px',
                           fontWeight: '700',
                           marginBottom: '15px',
-                          color: '#1a1a1a',
+                          color: colors.text,
                           lineHeight: '1.4'
                         }}>
                           {evento.descricaoTipo}
@@ -210,7 +219,7 @@ const Eventos = () => {
                         {evento.descricao && (
                           <p style={{
                             fontSize: '14px',
-                            color: '#666',
+                            color: colors.textSecondary,
                             marginBottom: '15px',
                             lineHeight: '1.6',
                             display: '-webkit-box',
@@ -225,15 +234,15 @@ const Eventos = () => {
                         {/* Órgão */}
                         {evento.orgaos && evento.orgaos.length > 0 && (
                           <div style={{
-                            backgroundColor: '#f8f9fa',
+                            backgroundColor: colors.backgroundAlt,
                             padding: '12px',
                             borderRadius: '8px',
                             marginBottom: '12px'
                           }}>
-                            <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>
-                              🏛️ Órgão
+                            <div style={{ fontSize: '12px', color: colors.textSecondary, marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <FaLandmark /> Órgão
                             </div>
-                            <div style={{ fontSize: '14px', fontWeight: '600', color: '#1a1a1a' }}>
+                            <div style={{ fontSize: '14px', fontWeight: '600', color: colors.text }}>
                               {evento.orgaos[0].apelido}
                             </div>
                           </div>
@@ -242,15 +251,15 @@ const Eventos = () => {
                         {/* Local */}
                         {evento.localCamara?.nome && (
                           <div style={{
-                            backgroundColor: '#f8f9fa',
+                            backgroundColor: colors.backgroundAlt,
                             padding: '12px',
                             borderRadius: '8px',
                             marginBottom: '15px'
                           }}>
-                            <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>
-                              📍 Local
+                            <div style={{ fontSize: '12px', color: colors.textSecondary, marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <FaMapMarkerAlt /> Local
                             </div>
-                            <div style={{ fontSize: '14px', fontWeight: '600', color: '#1a1a1a' }}>
+                            <div style={{ fontSize: '14px', fontWeight: '600', color: colors.text }}>
                               {evento.localCamara.nome}
                             </div>
                           </div>
@@ -273,7 +282,11 @@ const Eventos = () => {
                                 padding: '10px',
                                 fontWeight: '600',
                                 fontSize: '14px',
-                                transition: 'all 0.3s'
+                                transition: 'all 0.3s',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px'
                               }}
                               onMouseEnter={(e) => {
                                 e.currentTarget.style.backgroundColor = '#218838';
@@ -282,7 +295,7 @@ const Eventos = () => {
                                 e.currentTarget.style.backgroundColor = '#28a745';
                               }}
                             >
-                              🎥 Assistir Evento
+                              <FaVideo /> Assistir Evento
                             </Button>
                           </a>
                         )}

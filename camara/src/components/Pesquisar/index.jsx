@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useTheme } from '../../contexts/ThemeContext';
 import axios from 'axios';
 import { Row, Form, FormControl, Button, Dropdown, ButtonGroup, Spinner } from 'react-bootstrap';
 import { ModalD } from '../ModalD';
+import { FaSearch, FaFilter, FaLandmark, FaMapMarkerAlt } from 'react-icons/fa';
 import './index.css';
 
 const Pesquisar = () => {
+  const { colors } = useTheme();
   const [query, setQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [selectedDeputado, setSelectedDeputado] = useState(null);
@@ -153,15 +156,17 @@ const Pesquisar = () => {
   }, [deputados, selectedStatus, selectedState, selectedParty]);
 
   return (
-    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh', padding: '40px 0' }}>
+    <div style={{ backgroundColor: colors.backgroundAlt, minHeight: '100vh', padding: '40px 0' }}>
       <div className="page-header" style={{ margin: '0 auto 40px', maxWidth: '1200px' }}>
-        <h1>🏛️ Deputados Federais</h1>
-        <p>Conheça os representantes eleitos na Câmara dos Deputados</p>
+        <h1 style={{ color: colors.text, display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <FaLandmark /> Deputados Federais
+        </h1>
+        <p style={{ color: colors.textSecondary }}>Conheça os representantes eleitos na Câmara dos Deputados</p>
       </div>
 
-      <div className="search-container" style={{ margin: '0 auto', maxWidth: '1200px' }}>
-        <Form.Label style={{ fontSize: '20px', fontWeight: '600', marginBottom: '15px', color: '#1a1a1a' }}>
-          🔍 Pesquisar Deputado
+      <div className="search-container" style={{ margin: '0 auto', maxWidth: '1200px', backgroundColor: colors.card, boxShadow: `0 2px 12px ${colors.shadow}` }}>
+        <Form.Label style={{ fontSize: '20px', fontWeight: '600', marginBottom: '15px', color: colors.text, display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <FaSearch /> Pesquisar Deputado
         </Form.Label>
         <Form className="d-flex align-items-center" style={{ marginBottom: '20px' }}>
           <FormControl
@@ -173,16 +178,18 @@ const Pesquisar = () => {
               padding: '12px 20px',
               fontSize: '16px',
               borderRadius: '12px',
-              border: '2px solid #e0e0e0',
+              border: `2px solid ${colors.border}`,
+              backgroundColor: colors.background,
+              color: colors.text,
               transition: 'border-color 0.3s'
             }}
             onFocus={(e) => e.target.style.borderColor = '#28a745'}
-            onBlur={(e) => e.target.style.borderColor = '#e0e0e0'}
+            onBlur={(e) => e.target.style.borderColor = colors.border}
           />
         </Form>
 
         <div className="results-info">
-          <div className="results-count">
+          <div className="results-count" style={{ color: colors.text }}>
             <span>{deputadosEncontrados}</span> {deputadosEncontrados === 1 ? 'deputado encontrado' : 'deputados encontrados'}
           </div>
           <Dropdown>
@@ -193,10 +200,15 @@ const Pesquisar = () => {
                 borderRadius: '12px',
                 padding: '10px 24px',
                 fontWeight: '600',
-                border: '2px solid #28a745'
+                border: '2px solid #28a745',
+                backgroundColor: colors.card,
+                color: colors.text,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
               }}
             >
-              🔧 Filtros
+              <FaFilter /> Filtros
             </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.ItemText>
@@ -328,7 +340,7 @@ const Pesquisar = () => {
             alignItems: 'center',
             minHeight: '400px',
             gap: '20px',
-            backgroundColor: 'white',
+            backgroundColor: colors.card,
             borderRadius: '16px',
             padding: '60px'
           }}>
@@ -344,7 +356,7 @@ const Pesquisar = () => {
             />
             <p style={{
               fontSize: '18px',
-              color: '#666',
+              color: colors.textSecondary,
               fontWeight: '500'
             }}>
               Carregando deputados...
@@ -356,20 +368,27 @@ const Pesquisar = () => {
               {(selectedStatus === '' && selectedState === '' && selectedParty === '')
                 ? deputados.slice(0, quantidadeDeputados).map((deputado) => (
                   <div className="col-lg-3 col-md-4 col-sm-6" key={deputado.id}>
-                    <div className="deputado-card" onClick={() => handleDeputadoClick(deputado)}>
+                    <div
+                      className="deputado-card"
+                      onClick={() => handleDeputadoClick(deputado)}
+                      style={{
+                        backgroundColor: colors.card,
+                        boxShadow: `0 2px 8px ${colors.shadow}`
+                      }}
+                    >
                       <img
                         src={deputado.urlFoto}
                         alt={deputado.nome}
                         className="img-fluid"
                       />
-                      <h3>{deputado.nome}</h3>
+                      <h3 style={{ color: colors.text }}>{deputado.nome}</h3>
                       <div className="deputado-info">
                         {deputado.siglaPartido && (
                           <span className="deputado-partido">{deputado.siglaPartido}</span>
                         )}
                         {deputado.siglaUf && (
-                          <div style={{ marginTop: '8px', color: '#888', fontSize: '13px' }}>
-                            📍 {deputado.siglaUf}
+                          <div style={{ marginTop: '8px', color: colors.textSecondary, fontSize: '13px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                            <FaMapMarkerAlt /> {deputado.siglaUf}
                           </div>
                         )}
                       </div>
@@ -378,20 +397,27 @@ const Pesquisar = () => {
                 ))
                 : filteredDeputados.slice(0, quantidadeDeputados).map((deputado) => (
                   <div className="col-lg-3 col-md-4 col-sm-6" key={deputado.id}>
-                    <div className="deputado-card" onClick={() => handleDeputadoClick(deputado)}>
+                    <div
+                      className="deputado-card"
+                      onClick={() => handleDeputadoClick(deputado)}
+                      style={{
+                        backgroundColor: colors.card,
+                        boxShadow: `0 2px 8px ${colors.shadow}`
+                      }}
+                    >
                       <img
                         src={deputado.urlFoto}
                         alt={deputado.nome}
                         className="img-fluid"
                       />
-                      <h3>{deputado.nome}</h3>
+                      <h3 style={{ color: colors.text }}>{deputado.nome}</h3>
                       <div className="deputado-info">
                         {deputado.siglaPartido && (
                           <span className="deputado-partido">{deputado.siglaPartido}</span>
                         )}
                         {deputado.siglaUf && (
-                          <div style={{ marginTop: '8px', color: '#888', fontSize: '13px' }}>
-                            📍 {deputado.siglaUf}
+                          <div style={{ marginTop: '8px', color: colors.textSecondary, fontSize: '13px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                            <FaMapMarkerAlt /> {deputado.siglaUf}
                           </div>
                         )}
                       </div>

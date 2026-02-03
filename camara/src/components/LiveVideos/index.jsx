@@ -1,26 +1,33 @@
 ﻿import React from "react";
+import { useTheme } from "../../contexts/ThemeContext";
+import { FaLandmark } from 'react-icons/fa';
 
 const LiveVideos = () => {
+  const { colors } = useTheme();
+
   return (
     <div style={{
       marginBottom: "60px",
-      backgroundColor: "#fff",
+      backgroundColor: colors.card,
       borderRadius: "16px",
       padding: "40px",
-      boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
+      boxShadow: `0 4px 12px ${colors.shadow}`
     }}>
       <h2 style={{
         textAlign: "center",
         marginBottom: "30px",
-        color: "#1a1a1a",
+        color: colors.text,
         fontSize: "28px",
         fontWeight: "bold",
         borderBottom: "3px solid #28a745",
         paddingBottom: "15px",
-        display: "inline-block",
-        width: "100%"
+        display: "inline-flex",
+        alignItems: "center",
+        gap: "12px",
+        width: "100%",
+        justifyContent: "center"
       }}>
-        Câmara dos Deputados
+        <FaLandmark /> Câmara dos Deputados
       </h2>
 
       <div style={{

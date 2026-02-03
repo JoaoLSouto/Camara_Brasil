@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTheme } from '../../contexts/ThemeContext';
 import { Header } from '../../components/Header';
 import { Subheader } from '../../components/Subheader';
 import './index.css';
@@ -6,8 +7,10 @@ import { Bottom } from '../../components/Bottom';
 import axios from "axios";
 import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar, PieChart, Pie, Cell } from "recharts";
 import { Container, Row, Col, Form, Card, Spinner } from "react-bootstrap";
+import { FaChartBar } from 'react-icons/fa';
 
 const Estatisticas = () => {
+  const { colors } = useTheme();
 
   const [partidos, setPartidos] = useState([]);
   const [despesasPorPartido, setDespesasPorPartido] = useState([]);
@@ -95,28 +98,30 @@ const Estatisticas = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#f8f9fa', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: colors.backgroundAlt, minHeight: '100vh' }}>
       <Subheader />
       <Header />
 
       <Container style={{ padding: '40px 0' }}>
-        <Card style={{ marginBottom: '30px', border: 'none', boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
+        <Card style={{ marginBottom: '30px', border: 'none', boxShadow: `0 2px 12px ${colors.shadow}`, backgroundColor: colors.card }}>
           <Card.Body>
-            <h2 style={{ color: '#1a1a1a', marginBottom: '20px', fontSize: '28px', fontWeight: 'bold' }}>
-              📊 Estatísticas da Câmara dos Deputados
+            <h2 style={{ color: colors.text, marginBottom: '20px', fontSize: '28px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <FaChartBar /> Estatísticas da Câmara dos Deputados
             </h2>
 
             <Row className="mb-4">
               <Col md={6}>
                 <Form.Group>
-                  <Form.Label style={{ fontWeight: '600', color: '#1a1a1a' }}>Categoria:</Form.Label>
+                  <Form.Label style={{ fontWeight: '600', color: colors.text }}>Categoria:</Form.Label>
                   <Form.Select
                     value={filtroCategoria}
                     onChange={(e) => setFiltroCategoria(e.target.value)}
                     style={{
                       padding: '10px',
                       borderRadius: '8px',
-                      border: '2px solid #e0e0e0'
+                      border: `2px solid ${colors.border}`,
+                      backgroundColor: colors.background,
+                      color: colors.text
                     }}
                   >
                     <option value="deputados">Deputados por Partido</option>
@@ -130,14 +135,16 @@ const Estatisticas = () => {
               {filtroCategoria === 'despesas' && (
                 <Col md={6}>
                   <Form.Group>
-                    <Form.Label style={{ fontWeight: '600', color: '#1a1a1a' }}>Ano:</Form.Label>
+                    <Form.Label style={{ fontWeight: '600', color: colors.text }}>Ano:</Form.Label>
                     <Form.Select
                       value={anoSelecionado}
                       onChange={(e) => setAnoSelecionado(e.target.value)}
                       style={{
                         padding: '10px',
                         borderRadius: '8px',
-                        border: '2px solid #e0e0e0'
+                        border: `2px solid ${colors.border}`,
+                        backgroundColor: colors.background,
+                        color: colors.text
                       }}
                     >
                       <option value="2024">2024</option>
@@ -158,21 +165,21 @@ const Estatisticas = () => {
             justifyContent: 'center',
             alignItems: 'center',
             minHeight: '400px',
-            backgroundColor: 'white',
+            backgroundColor: colors.card,
             borderRadius: '16px',
             padding: '60px'
           }}>
             <Spinner animation="border" style={{ width: '4rem', height: '4rem', color: '#28a745' }} />
-            <p style={{ marginTop: '20px', fontSize: '18px', color: '#666' }}>
+            <p style={{ marginTop: '20px', fontSize: '18px', color: colors.textSecondary }}>
               {filtroCategoria === 'despesas' ? 'Calculando despesas... (pode levar alguns segundos)' : 'Carregando dados...'}
             </p>
           </div>
         ) : (
-          <Card style={{ border: 'none', boxShadow: '0 2px 12px rgba(0,0,0,0.08)' }}>
+          <Card style={{ border: 'none', boxShadow: `0 2px 12px ${colors.shadow}`, backgroundColor: colors.card }}>
             <Card.Body style={{ padding: '30px' }}>
               {filtroCategoria === 'deputados' && (
                 <>
-                  <h3 style={{ marginBottom: '30px', color: '#1a1a1a' }}>
+                  <h3 style={{ marginBottom: '30px', color: colors.text }}>
                     Quantidade de Deputados por Partido
                   </h3>
                   <div style={{ overflowX: 'auto' }}>
@@ -190,10 +197,10 @@ const Estatisticas = () => {
 
               {filtroCategoria === 'despesas' && (
                 <>
-                  <h3 style={{ marginBottom: '20px', color: '#1a1a1a' }}>
+                  <h3 style={{ marginBottom: '20px', color: colors.text }}>
                     Despesas por Partido - {anoSelecionado} (Top 10)
                   </h3>
-                  <p style={{ color: '#666', fontSize: '14px', marginBottom: '30px' }}>
+                  <p style={{ color: colors.textSecondary, fontSize: '14px', marginBottom: '30px' }}>
                     * Valores baseados em amostra de 5 deputados por partido
                   </p>
                   <div style={{ overflowX: 'auto' }}>
@@ -211,7 +218,7 @@ const Estatisticas = () => {
 
               {filtroCategoria === 'estados' && (
                 <>
-                  <h3 style={{ marginBottom: '30px', color: '#1a1a1a' }}>
+                  <h3 style={{ marginBottom: '30px', color: colors.text }}>
                     Deputados por Estado
                   </h3>
                   <div style={{ overflowX: 'auto' }}>
@@ -229,7 +236,7 @@ const Estatisticas = () => {
 
               {filtroCategoria === 'genero' && (
                 <>
-                  <h3 style={{ marginBottom: '30px', color: '#1a1a1a' }}>
+                  <h3 style={{ marginBottom: '30px', color: colors.text }}>
                     Distribuição por Gênero
                   </h3>
                   <div style={{ display: 'flex', justifyContent: 'center' }}>

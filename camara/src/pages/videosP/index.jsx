@@ -1,4 +1,5 @@
 import React from "react";
+import { useTheme } from '../../contexts/ThemeContext';
 import { Header } from '../../components/Header';
 import { Container } from "react-bootstrap";
 import { Videos } from "../../components/Videos"
@@ -8,16 +9,17 @@ import { Subheader } from '../../components/Subheader';
 import { Bottom } from '../../components/Bottom';
 
 const VideosP = () => {
+  const { colors } = useTheme();
 
   return (
-    <div style={{ backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+    <div style={{ backgroundColor: colors.backgroundAlt, minHeight: '100vh' }}>
       <Subheader />
       <Header />
       <Container style={{ maxWidth: '1200px', padding: '40px 20px' }}>
         <h1 style={{
           textAlign: 'center',
           marginBottom: '50px',
-          color: '#1a1a1a',
+          color: colors.text,
           fontSize: '36px',
           fontWeight: 'bold'
         }}>
