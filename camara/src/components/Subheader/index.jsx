@@ -33,8 +33,8 @@ const Subheader = ({ autenticado }) => {
                 <FontAwesomeIcon icon={faTiktok} />
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/faleconosco">Fale Conosco</a>
+            <li className="nav-item">
+              <a className="nav-link" href="/faleconosco">Fale Conosco</a>
             </li>
           </ul>
         </div>
