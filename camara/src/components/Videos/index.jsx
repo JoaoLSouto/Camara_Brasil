@@ -10,10 +10,10 @@ const Videos = () => {
     const fetchVideo = async () => {
       try {
         const API_KEY = "AIzaSyDPCd7t9cOe9NuvhJ1BS-LB8ikdkuXLJtA";
-        
+
         // Canais oficiais da Voz do Brasil
         const OFFICIAL_CHANNELS = ['CanalGov', 'Câmara dos Deputados', 'Rádio e TV Justiça', 'EBC'];
-        
+
         // Primeiro, tentar buscar vídeo ao vivo da Voz do Brasil
         console.log('Buscando vídeo ao vivo da Voz do Brasil...');
         const liveResponse = await axios.get(
@@ -33,12 +33,12 @@ const Videos = () => {
         // Procurar por vídeo ao vivo de canal oficial
         let selectedVideo = null;
         if (liveResponse.data.items && liveResponse.data.items.length > 0) {
-          selectedVideo = liveResponse.data.items.find(v => 
-            OFFICIAL_CHANNELS.some(channel => 
+          selectedVideo = liveResponse.data.items.find(v =>
+            OFFICIAL_CHANNELS.some(channel =>
               v.snippet.channelTitle.includes(channel)
             )
           );
-          
+
           if (selectedVideo) {
             setVideo(selectedVideo);
             setIsLive(true);
@@ -67,11 +67,11 @@ const Videos = () => {
         if (recordedResponse.data.items && recordedResponse.data.items.length > 0) {
           // Procurar vídeo de canal oficial
           selectedVideo = recordedResponse.data.items.find(v =>
-            OFFICIAL_CHANNELS.some(channel => 
+            OFFICIAL_CHANNELS.some(channel =>
               v.snippet.channelTitle.includes(channel)
             )
           );
-          
+
           if (selectedVideo) {
             setVideo(selectedVideo);
             setIsLive(false);
