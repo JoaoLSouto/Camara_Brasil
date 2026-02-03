@@ -1,53 +1,130 @@
-# Getting Started with Create React App
+# Câmara Brasil
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicação web para consulta de informações sobre deputados federais, notícias, eventos e atividades da Câmara dos Deputados do Brasil.
 
-## Available Scripts
+## Sobre o Projeto
 
-In the project directory, you can run:
+Este projeto foi desenvolvido com React e utiliza a API de Dados Abertos da Câmara dos Deputados para fornecer informações atualizadas sobre:
+- Deputados federais e seus perfis
+- Notícias e comunicados oficiais
+- Eventos e sessões parlamentares
+- Estatísticas e dados da Câmara
+- Frentes parlamentares
+- Vídeos e transmissões ao vivo
+- Integração com redes sociais
+
+## Tecnologias Utilizadas
+
+- React 18
+- React Router DOM
+- Styled Components
+- Axios
+- JSON Server (para mock de dados)
+- API de Dados Abertos da Câmara dos Deputados
+
+## Instalação e Configuração
+
+### Pré-requisitos
+
+- Node.js (versão 14 ou superior)
+- npm ou yarn
+
+### Instalação
+
+1. Clone o repositório:
+```bash
+git clone <url-do-repositório>
+cd camara
+```
+
+2. Instale as dependências:
+```bash
+npm install
+```
+
+3. Inicie o servidor JSON (para dados mockados):
+```bash
+node server.js
+```
+
+4. Em outro terminal, inicie a aplicação:
+```bash
+npm start
+```
+
+## Scripts Disponíveis
+
+No diretório do projeto, você pode executar:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Executa a aplicação em modo de desenvolvimento.\
+Abra [http://localhost:3000](http://localhost:3000) para visualizar no navegador.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+A página recarrega automaticamente quando você faz alterações.\
+Você também verá erros de lint no console.
+
+### `node server.js`
+
+Inicia o servidor JSON na porta 5000 para servir dados mockados.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Executa os testes em modo watch interativo.\
+Veja mais informações sobre [executar testes](https://facebook.github.io/create-react-app/docs/running-tests).
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Compila a aplicação para produção na pasta `build`.\
+Otimiza o React para melhor performance em produção.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+O build é minificado e os nomes dos arquivos incluem hashes.\
+Sua aplicação está pronta para deploy!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Veja mais sobre [deployment](https://facebook.github.io/create-react-app/docs/deployment).
 
-### `npm run eject`
+## Estrutura do Projeto
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```
+camara/
+├── public/           # Arquivos públicos estáticos
+├── src/
+│   ├── assets/       # Imagens e recursos
+│   ├── components/   # Componentes reutilizáveis
+│   ├── contexts/     # Context API (tema, etc)
+│   ├── pages/        # Páginas da aplicação
+│   ├── services/     # Configuração de API
+│   └── styles/       # Estilos globais
+├── db.json          # Dados mockados
+└── server.js        # Servidor JSON
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Funcionalidades
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- 🏛️ **Deputados**: Lista e busca de deputados federais com informações detalhadas
+- 📰 **Notícias**: Últimas notícias e comunicados da Câmara
+- 📅 **Eventos**: Agenda de eventos e sessões parlamentares
+- 📊 **Estatísticas**: Dados e estatísticas sobre as atividades parlamentares
+- 🎥 **Vídeos**: Vídeos e transmissões ao vivo das sessões
+- 🤝 **Frentes Parlamentares**: Informações sobre frentes e grupos de trabalho
+- 🌐 **Redes Sociais**: Integração com mídias sociais da Câmara
+- 💬 **Fale Conosco**: Canal de comunicação
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## API
 
-## Learn More
+Este projeto utiliza a [API de Dados Abertos da Câmara dos Deputados](https://dadosabertos.camara.leg.br/swagger/api.html).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contribuindo
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
 
-### Code Splitting
+## Licença
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Este projeto é de código aberto e está disponível sob a licença MIT.
+
+## Contato
+
+Para mais informações sobre o projeto, entre em contato através da página "Fale Conosco" na aplicação.
 
 ### Analyzing the Bundle Size
 
